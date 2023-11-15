@@ -4,7 +4,7 @@ import * as actionCreators from '../state/action-creators'
 import wheel, { initialWheelState } from '../state/reducer'
 import { moveClockwise, moveCounterClockwise } from '../state/action-creators'
 
-function Wheel({ wheel, moveClockwise, moveCounterClockwise }) {
+function Wheel({ activeCogIndex, moveClockwise, moveCounterClockwise }) {
   const handleClockwiseButtonClick = () => {
     moveClockwise();
   };
@@ -13,15 +13,26 @@ function Wheel({ wheel, moveClockwise, moveCounterClockwise }) {
     moveCounterClockwise();
   };
 
+  const cogs = ['', '', '', '', '', '' ]
+
   return (
     <div id="wrapper">
       <div id="wheel">
-        <div className="cog active" style={{ "--i": 0 }}>B</div>
+        {cogs.map((cog, index) => (
+          <div
+            key={index}
+            className={`cog ${index === activeCogIndex ? 'active' : ''}`}
+            style={{ "--i": index }}
+          >
+            {index === activeCogIndex ? 'B' : ''}
+          </div>
+        ))}
+ {/*    <div className="cog active" style={{ "--i": 0 }}>B</div>
         <div className="cog" style={{ "--i": 1 }}>1</div>
         <div className="cog" style={{ "--i": 2 }}>2</div>
         <div className="cog" style={{ "--i": 3 }}>3</div>
         <div className="cog" style={{ "--i": 4 }}>4</div>
-        <div className="cog" style={{ "--i": 5 }}>5</div> {/* --i is a custom CSS property, no need to touch that nor the style object */}
+        <div className="cog" style={{ "--i": 5 }}>5</div>  --i is a custom CSS property, no need to touch that nor the style object */}
       </div>
 
       <div id="keypad" >
@@ -37,7 +48,7 @@ function Wheel({ wheel, moveClockwise, moveCounterClockwise }) {
 }
 
 const mapStateToProps = (state) => ({
-  wheel: state.wheel,
+  activeCogIndex: state.wheel,
 });
 
 export default connect(mapStateToProps, actionCreators)(Wheel);
