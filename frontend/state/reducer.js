@@ -3,7 +3,6 @@ import * as types from "./action-types";
 import { combineReducers } from 'redux';
 
 export const initialWheelState = 0
-
 function wheel(state = initialWheelState, action) {
   switch (action.type) {
     case types.MOVE_CLOCKWISE:
@@ -15,17 +14,9 @@ function wheel(state = initialWheelState, action) {
   }
 };
 
-const initialQuizState = null;
-
+const initialQuizState = null
 function quiz(state = initialQuizState, action) {
-  switch (action.type) {
-    case types.SET_QUIZ_INTO_STATE:
-      return action.payload;
-    case types.SET_INFO_MESSAGE:
-      return initialQuizState;
-    default:
-      return state;
-  }
+  return state
 }
 
 const initialSelectedAnswerState = null
