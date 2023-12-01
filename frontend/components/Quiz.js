@@ -1,36 +1,51 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
-export default function Quiz(props) {
+function Quiz(props) {
+  const { quiz, fetchQuiz, selectedAnswer } = props;
+
+  useEffect(() => {
+    fetchQuiz();
+  }, [fetchQuiz]);
+
+  if (quiz === null) {
+    return <div>Loading next quiz...</div>;
+  }
+
   return (
     <div id="wrapper">
-      {
-        // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        true ? (
-          <>
-            <h2>What is a closure?</h2>
 
-            <div id="quizAnswers">
-              <div className="answer selected">
-                A function
-                <button>
-                  SELECTED
-                </button>
-              </div>
+      <h2>{quiz.question}</h2>
 
-              <div className="answer">
-                An elephant
-                <button>
-                  Select
-                </button>
-              </div>
-            </div>
+      <div id="quizAnswers">
+        <div className="answer selected">
+          {quiz.answers[0].text}
+          <button>
+            SELECTED
+          </button>
+        </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
-          </>
-        ) : 'Loading next quiz...'
-      }
+        <div className="answer">
+          {quiz.answers[1].text}
+          <button>
+            Select
+          </button>
+        </div>
+      </div>
+
+
+      <button id="submitAnswerBtn" disabled={props.selectedAnswer === null}>Submit answer</button>
     </div>
-  )
+  );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    quiz: state.quiz,
+    selectedAnswer: state.selectedAnswer
+  };
+};
+
+export default connect(mapStateToProps, actionCreators)(Quiz);

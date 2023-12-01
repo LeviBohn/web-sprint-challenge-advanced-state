@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
+  const { newQuestion, newTrueAnswer, newFalseAnswer } = props;
 
   const onChange = evt => {
 
