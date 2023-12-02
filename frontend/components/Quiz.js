@@ -3,11 +3,34 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
 function Quiz(props) {
-  const { quiz, fetchQuiz, selectedAnswer } = props;
+  const { quiz, fetchQuiz, selectedAnswer, selectAnswer } = props;
 
   useEffect(() => {
     fetchQuiz();
   }, [fetchQuiz]);
+
+  const handleAnswerSelect = (answer) => {
+    selectAnswer(answer);
+  };
+
+  const renderAnswers = () => {
+    return quiz.answers.map((answer, index) => (
+      <div
+        key={index}
+        className={`answer ${selectedAnswer === answer ? 'selected' : ''}`}
+        onClick={() => handleAnswerSelect(answer)}
+      >
+        {answer.text}
+        <button>
+          {selectedAnswer === answer ? 'SELECTED' : 'Select'}
+        </button>
+      </div>
+    ));
+  };
+
+  const handleSubmitAnswer = () => {
+
+  }
 
   if (quiz === null) {
     return <div>Loading next quiz...</div>;
@@ -18,28 +41,18 @@ function Quiz(props) {
 
       <h2>{quiz.question}</h2>
 
-      <div id="quizAnswers">
-        <div className="answer selected">
-          {quiz.answers[0].text}
-          <button>
-            SELECTED
-          </button>
-        </div>
+      <div id="quizAnswers">{renderAnswers()}</div>
 
-        <div className="answer">
-          {quiz.answers[1].text}
-          <button>
-            Select
-          </button>
-        </div>
-      </div>
-
-
-      <button id="submitAnswerBtn" disabled={props.selectedAnswer === null}>Submit answer</button>
+      <button
+        id="submitAnswerBtn"
+        disabled={props.selectedAnswer === null}
+        onClick={handleSubmitAnswer}
+      >
+        Submit answer
+      </button>
     </div>
   );
 }
-
 
 const mapStateToProps = (state) => {
   return {
