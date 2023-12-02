@@ -29,8 +29,15 @@ function Quiz(props) {
   };
 
   const handleSubmitAnswer = () => {
-
-  }
+    if (props.selectedAnswer !== null) {
+      const answerPayload = {
+        quiz_id: quiz.id,
+        answer_id: props.selectedAnswer.id,
+      };
+      props.postAnswer(answerPayload);
+    }
+    fetchQuiz();
+  };
 
   if (quiz === null) {
     return <div>Loading next quiz...</div>;
