@@ -15,7 +15,9 @@ export function selectAnswer(answer) {
   return { type: types.SET_SELECTED_ANSWER, payload: answer };
 }
 
-export function setMessage() { }
+export function setMessage(message) {
+  return { type: types.SET_INFO_MESSAGE, payload: message };
+}
 
 export function setQuiz() { }
 
@@ -40,16 +42,24 @@ export function fetchQuiz() {
     // - Dispatch an action to send the obtained quiz to its state
   };
 }
-export function postAnswer(answer) {
+export function postAnswer({quiz_id, answer_id}) {
   return function (dispatch) {
-    axios.post('http://localhost:9000/api/quiz/answer', answer)
+    axios.post('http://localhost:9000/api/quiz/answer', {quiz_id, answer_id})
       .then(response => {
-        dispatch({type: types.SET_SELECTED_ANSWER, payload: null });
-        dispatch({ type: types.SET_INFO_MESSAGE, payload: response.data.message });
-        dispatch(fetchQuiz());
+        console.log("this is your axios.post.then response:", response.data);
+        const isCorrect = answer.answer_id === response.data.answers[0].answer_id;
+        const message = isCorrect 
+          ? 'Nice job! That was the correct answer'
+          : 'What a shame! That was the incorrect answer';
+        console.log('Message in postAnswer:', message);
+        // dispatch({ type: types.SET_INFO_MESSAGE, payload: response.data });
+        dispatch(setMessage(response.data.message));
       })
       .catch(error => {
         console.error('Error submitting answer:', error);
+      })
+      .finally(() => {
+        dispatch(fetchQuiz())
       });
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
@@ -60,7 +70,7 @@ export function postAnswer(answer) {
 
 export function postQuiz() {
   return function (dispatch) {
-    axios.post('http://localhost:9000/api/quiz/new', payload)
+    axios.post('http://localhost:9000/api/quiz/new')
     .then(response => {
       dispatch(setInfoMessage(response.data.message));
       dispatch(resetForm());

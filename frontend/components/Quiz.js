@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
+import Message from './Message';
 
 function Quiz(props) {
   const { quiz, fetchQuiz, selectedAnswer, selectAnswer } = props;
@@ -32,7 +33,7 @@ function Quiz(props) {
     if (props.selectedAnswer !== null) {
       const answerPayload = {
         quiz_id: quiz.id,
-        answer_id: props.selectedAnswer.id,
+        answer_id: selectedAnswer.id,
       };
       props.postAnswer(answerPayload);
     }
@@ -43,9 +44,11 @@ function Quiz(props) {
     return <div>Loading next quiz...</div>;
   }
 
+  console.log('infoMessage in Quiz component:', props.infoMessage);
+
   return (
     <div id="wrapper">
-
+      <Message />
       <h2>{quiz.question}</h2>
 
       <div id="quizAnswers">{renderAnswers()}</div>
@@ -54,6 +57,7 @@ function Quiz(props) {
         id="submitAnswerBtn"
         disabled={props.selectedAnswer === null}
         onClick={handleSubmitAnswer}
+        // onClick={() => actionCreators.postAnswer({quiz_id:quiz.quiz_id, answer_id:selectedAnswer})}
       >
         Submit answer
       </button>
@@ -64,7 +68,8 @@ function Quiz(props) {
 const mapStateToProps = (state) => {
   return {
     quiz: state.quiz,
-    selectedAnswer: state.selectedAnswer
+    selectedAnswer: state.selectedAnswer,
+    infoMessage: state.infoMessage,
   };
 };
 
