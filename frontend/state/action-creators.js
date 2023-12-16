@@ -46,12 +46,8 @@ export function postAnswer({quiz_id, answer_id}) {
   return function (dispatch) {
     axios.post('http://localhost:9000/api/quiz/answer', {quiz_id, answer_id})
       .then(response => {
-        console.log("this is your axios.post.then response:", response.data);
-        const isCorrect = answer.answer_id === response.data.answers[0].answer_id;
-        const message = isCorrect 
-          ? 'Nice job! That was the correct answer'
-          : 'What a shame! That was the incorrect answer';
-        console.log('Message in postAnswer:', message);
+        const isCorrect = answer_id === response;
+        console.log('Message in postAnswer:', response.data.message);
         // dispatch({ type: types.SET_INFO_MESSAGE, payload: response.data });
         dispatch(setMessage(response.data.message));
       })
@@ -72,7 +68,7 @@ export function postQuiz() {
   return function (dispatch) {
     axios.post('http://localhost:9000/api/quiz/new')
     .then(response => {
-      dispatch(setInfoMessage(response.data.message));
+      dispatch(setMessage(response.data.message));
       dispatch(resetForm());
     })
     .catch(error => {

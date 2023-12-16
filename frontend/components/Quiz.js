@@ -30,11 +30,12 @@ function Quiz(props) {
   };
 
   const handleSubmitAnswer = () => {
-    if (props.selectedAnswer !== null) {
+    if (selectedAnswer !== null) {
       const answerPayload = {
-        quiz_id: quiz.id,
-        answer_id: selectedAnswer.id,
+        quiz_id: quiz.quiz_id,
+        answer_id: selectedAnswer.answer_id,
       };
+        console.log("answer:", selectedAnswer.answer_id);
       props.postAnswer(answerPayload);
     }
     fetchQuiz();
@@ -48,7 +49,6 @@ function Quiz(props) {
 
   return (
     <div id="wrapper">
-      <Message />
       <h2>{quiz.question}</h2>
 
       <div id="quizAnswers">{renderAnswers()}</div>
