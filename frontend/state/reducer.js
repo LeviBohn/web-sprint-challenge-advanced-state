@@ -14,6 +14,16 @@ function wheel(state = initialWheelState, action) {
   }
 };
 
+const initialQuizzesState = [];
+function quizzes(state = initialQuizzesState, action) {
+  switch (action.type) {
+    case types.ADD_QUIZ:
+      return [...state, action.payload];
+    default:
+      return state;
+  }
+}
+
 const initialQuizState = null
 function quiz(state = initialQuizState, action) {
   switch (action.type) {
@@ -61,4 +71,4 @@ function form(state = initialFormState, action) {
   }
 }
 
-export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form })
+export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form, quizzes });

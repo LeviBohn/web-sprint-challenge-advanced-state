@@ -35,7 +35,6 @@ function Quiz(props) {
         quiz_id: quiz.quiz_id,
         answer_id: selectedAnswer.answer_id,
       };
-        console.log("answer:", selectedAnswer.answer_id);
       props.postAnswer(answerPayload);
     }
     fetchQuiz();
@@ -57,7 +56,7 @@ function Quiz(props) {
         id="submitAnswerBtn"
         disabled={props.selectedAnswer === null}
         onClick={handleSubmitAnswer}
-        // onClick={() => actionCreators.postAnswer({quiz_id:quiz.quiz_id, answer_id:selectedAnswer})}
+      // onClick={() => actionCreators.postAnswer({quiz_id:quiz.quiz_id, answer_id:selectedAnswer})}
       >
         Submit answer
       </button>
